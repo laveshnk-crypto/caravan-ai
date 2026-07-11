@@ -51,8 +51,7 @@ if __name__ == "__main__":
     player_hand = PlayerHand()
     player_hand.draw_initial_hand(deck)
 
-    print("Initial hand:", player_hand.show_hand()
-    print(player_hand)
+    print("Initial hand:", player_hand.show_hand())
 
     played_card = player_hand.play_or_discard(0, deck)
     print(f"AI played card: {played_card}")
