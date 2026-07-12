@@ -46,14 +46,29 @@ class PlayerHand:
     def show_hand(self):
         return self.cards
 
-if __name__ == "__main__":
-    deck = CaravanDeck()
-    player_hand = PlayerHand()
-    player_hand.draw_initial_hand(deck)
+class CaravanTracks:
+    def __init__(self):
+        # create 3 empty tracks for the player
+        self.tracks = [[],[],[]]
 
-    print("Initial hand:", player_hand.show_hand())
+    def add_to_track(self, track_index: int, card: tuple) -> bool:
+        if 0 <= track_index < 3:
+            self.tracks[track_index].append(card)
+            return True
+        return False
+    
+    def get_track_score(self, track_index: int) -> int:
+        score = 0 
+        if not(0 <= track_index < 3):
+            return score
+        
+        for card in self.tracks[track_index]:
+            value, suit = card
+            if value == 'Ace':
+                score += 1
+            elif value in ['Jack', 'Queen', 'King']:
+                continue # TBA: Face card logic
+            else:
+                score += int(value)
+        return score
 
-    played_card = player_hand.play_or_discard(0, deck)
-    print(f"AI played card: {played_card}")
-    print(f"New hand after playing card: {player_hand.show_hand()}")
-    print(f"Cards left in deck: {deck.cards_left()}")
