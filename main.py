@@ -9,7 +9,7 @@ FACE_CARDS = {'Jack', 'Queen', 'King'}
 
 
 def prompt_face_target(current_turn, p1_board, p2_board, color):
-    """Prompt for target owner/track/card for a face-card play."""
+    """Prompt for target owner/track for a face-card play."""
     own_board = p1_board if current_turn == 1 else p2_board
     opp_board = p2_board if current_turn == 1 else p1_board
 
@@ -44,19 +44,9 @@ def prompt_face_target(current_turn, p1_board, p2_board, color):
             print(Fore.RED + 'That track is empty. Choose a non-empty track.')
             continue
 
-        print(f"{Fore.YELLOW}Targetable cards on Track {track_idx + 1}:")
-        for idx, card in enumerate(target_track):
-            print(f" [{idx + 1}]: {card[0]} of {card[1]}")
-
-        card_choice = input(f"{color}Select card to target (1-{len(target_track)}): ").strip()
-        if not card_choice.isdigit():
-            print(Fore.RED + 'Invalid card selection.')
-            continue
-
-        target_card_idx = int(card_choice) - 1
-        if not (0 <= target_card_idx < len(target_track)):
-            print(Fore.RED + 'Invalid card selection.')
-            continue
+        target_card_idx = len(target_track) - 1
+        top_card = target_track[target_card_idx]
+        print(f"{Fore.YELLOW}Targeting top card on Track {track_idx + 1}: {top_card[0]} of {top_card[1]}")
 
         return target_board, track_idx, target_card_idx
 

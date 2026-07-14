@@ -14,13 +14,13 @@ class CaravanDeck:
             random.shuffle(suits)
             
             # 2. Build the master deck from the scrambled parts
-            master_pool = [(v, s) for s in suits for v in values]
+            master_pool = [(v, s) for s in suits for v in values] * 10
             
             # 3. Scramble the combined pool completely
             random.shuffle(master_pool)
             
             # 4. Grab your 35 random cards
-            self.cards = random.sample(master_pool, 35)
+            self.cards = random.sample(master_pool, 500)
         
         # 5. Final pass shuffle on the active deck instance
         random.shuffle(self.cards)
@@ -110,16 +110,13 @@ class CaravanTracks:
         if not (0 <= target_card_index < len(track)):
             return False
 
-        if value == 'Queen' and target_card_index != len(track) - 1:
-            # Queens can only be played onto the current top card of a track.
+        if target_card_index != len(track) - 1:
+            # Face cards can only be played onto the current top card of a track.
             return False
 
         if value == 'Jack':
-            # Jack removes the targeted card and any attached face cards above it.
-            end_index = target_card_index + 1
-            while end_index < len(track) and track[end_index][0] in ['Jack', 'Queen', 'King']:
-                end_index += 1
-            del track[target_card_index:end_index]
+            # Jack removes the targeted top card.
+            del track[target_card_index:]
         else:
             track.insert(target_card_index + 1, face_card)
 
@@ -139,9 +136,20 @@ class CaravanTracks:
         if not track:
             return True
         
-        last_card_value, last_card_suit = track[-1]
-        def card_weight(val): return 1 if val == 'Ace' else int(val)
-        
+        def card_weight(val):
+            return 1 if val == 'Ace' else int(val)
+
+        last_numeric_card = None
+        for existing_card in reversed(track):
+            if existing_card[0] not in ['Jack', 'Queen', 'King']:
+                last_numeric_card = existing_card
+                break
+
+        if last_numeric_card is None:
+            return True
+
+        last_card_value, last_card_suit = last_numeric_card
+
         current_weight = card_weight(value)
         last_weight = card_weight(last_card_value)
 
