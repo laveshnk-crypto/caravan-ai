@@ -1,5 +1,5 @@
 # caravan-ai
-an AI built for the caravan mini-game from the critically acclaimed Fallout: New Vegas
+an AI built using Reinforcement learning (Proximal Policy Opitmization) for the caravan mini-game from the critically acclaimed Fallout: New Vegas. It 
 
 
 # AI Development
